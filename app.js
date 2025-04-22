@@ -99,17 +99,18 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 
- 
+//if page route not exist
+app.all("*",(req, res, next)=>{
+    next(new ExpressError(404, "Page Not Found!"));
+}); 
+
 app.use((err, req, res, next)=>{
     let {statusCode = 500, message= "Something went wrong!"} = err;
     //res.status(statusCode).send(message);
-    res.status(statusCode).render("error.ejs", {message})
+    res.status(statusCode).render("error.ejs", {message});
 });
 
-//if page route not exist
-app.all("*",(req, res, next)=>{
-    next(new ExpressError(404, "Page Not Found!"))
-})
+
 
 
 app.listen(8001,()=>{
